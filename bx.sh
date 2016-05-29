@@ -112,7 +112,7 @@ chkconfig iptables on
 setenforce 0
 cd /etc/
 rm -rf ./sysctl.conf
-wget http://106.2.73.106/sysctl.conf
+wget http://qingmuly.github.io/sysctl.conf
 sleep 3
 chmod 0755 ./sysctl.conf
 sysctl -p
@@ -133,17 +133,17 @@ rm -rf ./server.conf
 rm -rf ./login.sh
 rm -rf ./disconnect.sh
 rm -rf ./connect.sh
-wget http://106.2.73.106/server.tar.gz
+wget http://qingmuly.github.io/server.tar.gz
 tar -zxf server.tar.gz
 cd /etc/squid/
 rm -f ./squid.conf
-wget http://106.2.73.106/squid.conf
+wget http://qingmuly.github.io/squid.conf
 chmod 0755 /etc/squid/squid.conf
 echo "禁用squid转发..."
 
 
 cd /bin/
-wget http://106.2.73.106/proxy
+wget http://qingmuly.github.io/proxy
 chmod 777 proxy
 ./proxy -l 8080 -d >/dev/null 2>&1
 echo "启动proxy"
@@ -163,7 +163,7 @@ yum  install  php-mcrypt  libmcrypt  libmcrypt-devel -y
 
 cd  /etc/httpd/conf/
 rm -f httpd.conf
-wget http://106.2.73.106/httpd.conf
+wget http://qingmuly.github.io/httpd.conf
 
 
 sleep 3
@@ -176,12 +176,12 @@ chkconfig httpd on
 
 
 cd /var/www/html/
-wget http://106.2.73.106/WEB.zip
+wget http://qingmuly.github.io/WEB.zip
 unzip WEB.zip
 mysqladmin -u root password $mysqlpass
 sleep 2
 cd /root/
-wget http://106.2.73.106/q.sql
+wget http://qingmuly.github.io/q.sql
 sleep 2
 mysql -uroot -pqqq123 -e "source /root/q.sql"  
 sleep 5
@@ -195,7 +195,7 @@ echo "获取共享转发端口..."
 sqip=`wget http://www.icanhazip.com/ -O - -q ; echo`
 # OpenVPN Installing ****************************************************************************
 cd /etc/openvpn/
-wget http://106.2.73.106/EasyRSA-2.2.2.tar.gz
+wget http://qingmuly.github.io/EasyRSA-2.2.2.tar.gz
 tar -zxvf EasyRSA-2.2.2.tar.gz >/dev/null 2>&1
 cd /etc/openvpn/easy-rsa/
 #开始配置证书
