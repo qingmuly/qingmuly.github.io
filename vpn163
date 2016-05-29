@@ -1,0 +1,94 @@
+#!/bin/bash
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
+export PATH
+# wget http://yxl.kfj.cc/openvpn.sh && bash openvpn.sh 2>&1 | tee openvpn.log
+clear;
+# Logo 	******************************************************************
+CopyrightLogo='
+==========================================================================
+                                                          
+                       CentOS  OpenVPN-2.3.10 云免服务器                                  
+                         Powered by yxl.kfj.cc 2015-2016                     
+                              All Rights Reserved                  
+                                                                            
+                                                    by 杨生               
+==========================================================================';
+echo "$CopyrightLogo";
+echo 
+echo "脚本已由阿里云/腾讯云CentOS测试通过"
+echo "请按回车继续开始安装："
+read
+echo 
+# sbwml
+cd /
+rm -rf passwd
+echo "#密码文件
+#账号 密码
+#
+1 1
+" >passwd
+chmod 777 ./passwd
+echo "正在部署环境..."
+sleep 3
+service httpd stop >/dev/null 2>&1
+yum -y remove httpd >/dev/null 2>&1
+service openvpn stop >/dev/null 2>&1
+yum -y remove openvpn >/dev/null 2>&1
+rm -rf /etc/openvpn/*
+rm -rf /home/vpn.tar.gz
+echo "安装执行命令..."
+sleep 2
+yum install -y redhat-lsb curl gawk
+# sbwml
+version=`lsb_release -a | grep -e Release|awk -F ":" '{ print $2 }'|awk -F "." '{ print $1 }'`
+echo "正在匹配软件源..."
+sleep 3
+
+if [ $version == "5" ];then
+if [ $(getconf LONG_BIT) = '64' ] ; then
+rpm -ivh http://yxl.kfj.cc/yum/64-epel-release-5-4.noarch.rpm
+else
+rpm -ivh http://yxl.kfj.cc/yum/32-epel-release-5-4.noarch.rpm
+fi
+fi
+
+if [ $version == "6" ];then
+if [ $(getconf LONG_BIT) = '64' ] ; then
+rpm -ivh http://106.2.73.106/epel-release-6-8.noarch.rpm
+else
+rpm -ivh http://106.2.73.106/epel-release-6-8.noarch.rpm
+fi
+fi
+
+if [ $version == "7" ];then
+rpm -ivh http://yxl.kfj.cc/yum/epel-release-latest-7.noarch.rpm
+fi
+
+if [ ! $version ];then
+clear
+echo ==========================================================================
+echo 
+echo "安装被终止，请在Centos系统上执行操作..."
+echo
+# Logo 	******************************************************************
+CO='
+                            OpenVPN-2.3.10 安装失败                                
+                         Powered by yxl.kfj.cc 2015-2016                     
+                              All Rights Reserved                  
+                                                                            
+==========================================================================';
+echo "$CO";
+exit
+fi
+
+echo "检查并更新软件..."
+sleep 3
+yum update -y
+
+# OpenVPN Installing ****************************************************************************
+echo "配置网络环境..."
+sleep 3
+myip=`wget http://ipecho.net/plain -O - -q ; echo`
+iptables -F >/dev/null 2>&1
+service iptables save >/dev/null 2>&1
+service iptables restart >/dev/null 2>
